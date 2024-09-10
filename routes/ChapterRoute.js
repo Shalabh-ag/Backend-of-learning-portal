@@ -5,7 +5,7 @@ const path = require("path");
 const multer = require("multer");
 const Chapter = require("../models/Chapter");
 const Book = require("../models/Book");
-const User=require('../models/User')
+const User = require("../models/User");
 const { body, header, validationResult, query } = require("express-validator");
 const {
   uploadToAzure,
@@ -17,7 +17,7 @@ const { postAPI } = require("../utils/axiosURI");
 const router = express.Router();
 const { verifyTokenMiddleware } = require("../middlewares/jwtVerifier");
 
-router.use(verifyTokenMiddleware);
+// router.use(verifyTokenMiddleware);
 
 // Multer setup for handling file uploads
 const storage = multer.memoryStorage();
@@ -91,6 +91,7 @@ const checkFileType = (file) => {
 
 router.post(
   "/upload-chapters",
+  upload.array("chapterFiles", 10),
   // Validation rules
   [
     header("user-id")
@@ -105,6 +106,18 @@ router.post(
       .isString()
       .isLength({ min: 1 })
       .withMessage("Invalid Book ID format"),
+    body("chapterFiles").custom((value, { req }) => {
+      if (!req.files || req.files.length === 0) {
+        throw new Error("At least one chapter file is required");
+      }
+      if (req.files.length > 10) {
+        throw new Error("You cannot upload more than 10 files at a time");
+      }
+      if (!req.files.every((file) => checkFileType(file))) {
+        throw new Error("Only PDF files are allowed");
+      }
+      return true;
+    }),
   ],
   async (req, res) => {
     try {
@@ -134,10 +147,10 @@ router.post(
           message: "You are not authorized to upload chapters to this book",
         });
       }
-
+      console.log("here is book", book);
       const chapterFiles = req.files;
       const newChapters = [];
-
+      console.log("here are", chapterFiles);
       for (const file of chapterFiles) {
         const chapterName = path.parse(file.originalname).name;
         const chapterURL = await uploadToAzure(file);
