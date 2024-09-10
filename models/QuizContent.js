@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const { isUUID } = require('validator'); // Importing isUUID from the validator library
 const quizContentSchema = new mongoose.Schema({
   quizID: {
     type: String,

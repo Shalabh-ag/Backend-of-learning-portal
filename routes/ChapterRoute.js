@@ -105,18 +105,6 @@ router.post(
       .isString()
       .isLength({ min: 1 })
       .withMessage("Invalid Book ID format"),
-    body("chapterFiles").custom((value, { req }) => {
-      if (!req.files || req.files.length === 0) {
-        throw new Error("At least one chapter file is required");
-      }
-      if (req.files.length > 10) {
-        throw new Error("You cannot upload more than 10 files at a time");
-      }
-      if (!req.files.every((file) => checkFileType(file))) {
-        throw new Error("Only PDF files are allowed");
-      }
-      return true;
-    }),
   ],
   async (req, res) => {
     try {
