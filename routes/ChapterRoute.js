@@ -5,6 +5,7 @@ const path = require("path");
 const multer = require("multer");
 const Chapter = require("../models/Chapter");
 const Book = require("../models/Book");
+const User=require('../models/User')
 const { body, header, validationResult, query } = require("express-validator");
 const {
   uploadToAzure,

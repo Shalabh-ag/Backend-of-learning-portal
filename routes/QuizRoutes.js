@@ -25,7 +25,7 @@ require("dotenv").config();
 
 const { verifyTokenMiddleware } = require("../middlewares/jwtVerifier");
 
-// router.use(verifyTokenMiddleware);
+router.use(verifyTokenMiddleware);
 
 const storage = multer.memoryStorage(); // Store files in memory
 const upload = multer({
