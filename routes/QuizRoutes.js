@@ -1124,6 +1124,27 @@ router.post("/submit-quiz", async (req, res) => {
       mcqTotalMarks + descriptiveTotalMarks + numericalTotalMarks;
     const totalScore = mcqScore + descriptiveScore + numericalScore;
     const totalPercentage = (totalScore / totalMarks) * 100 || 0;
+    
+    // Calculate grade based on totalPercentage
+    let grade;
+    switch (true) {
+      case totalPercentage >= 90:
+        grade = "A";
+        break;
+      case totalPercentage >= 80:
+        grade = "B";
+        break;
+      case totalPercentage >= 70:
+        grade = "C";
+        break;
+      case totalPercentage >= 60:
+        grade = "D";
+        break;
+      default:
+        grade = "F";
+        break;
+    }
+
 
     // Find or create a StudentMarks entry
     let studentMarks = await StudentMarks.findOne({ userId, quizId: quizID });
@@ -1143,6 +1164,7 @@ router.post("/submit-quiz", async (req, res) => {
         descriptivePercentage,
         numericalPercentage,
         totalPercentage,
+        grade
       });
     }
 
@@ -1165,6 +1187,7 @@ router.post("/submit-quiz", async (req, res) => {
       descriptiveTotalMarks,
       numericalTotalMarks,
       totalMarks,
+      grade
     });
   } catch (error) {
     console.error("Error processing quiz submission:", error);

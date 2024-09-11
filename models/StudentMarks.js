@@ -27,10 +27,15 @@ const StudentMarksSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Total percentage is required"],
   },
+  grade: {
+    type: String, // New field for grade
+    required: true
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
+
 });
 
 module.exports = mongoose.model("StudentMarks", StudentMarksSchema);
