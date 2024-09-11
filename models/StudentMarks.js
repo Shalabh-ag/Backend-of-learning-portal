@@ -29,7 +29,7 @@ const StudentMarksSchema = new mongoose.Schema({
   },
   grade: {
     type: String, // New field for grade
-    required: true
+    required: [true, "grade is required"],
   },
   createdAt: {
     type: Date,
