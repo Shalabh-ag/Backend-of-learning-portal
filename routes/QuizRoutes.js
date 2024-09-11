@@ -118,7 +118,7 @@ router.post("/generate-quiz", async (req, res) => {
   if (uniqueSubjectNames.size === 1) {
     // If the length of the set is 1, use the single unique book name
     subject = Array.from(uniqueSubjectNames)[0];
-  } else if (uniqueSubjectNames > 1) {
+  } else if (uniqueSubjectNames.size > 1) {
     // If there are multiple unique names, set the subject to "mixed"
     subject = "Mixed";
   }
