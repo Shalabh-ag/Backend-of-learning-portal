@@ -28,12 +28,10 @@ const bookSchema = new mongoose.Schema({
     default: false,
   },
   embFile: {
-    type: String,
-    unique: true
+    type: String
   },
   embeddingLink: {
-    type: String,
-    unique: true
+    type: String
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
